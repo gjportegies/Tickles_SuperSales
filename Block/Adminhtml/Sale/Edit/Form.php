@@ -121,7 +121,6 @@ class Form extends Generic
             'date',
             [
                 'name' => 'end_date',
-                'required' => true,
                 'label' => __('Sale end date'),
                 'title' => __('Sale end date'),
                 'date_format' => $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT),
