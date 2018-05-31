@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="SaleGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Tickles\Supersales\Model\ResourceModel\Sale\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">SaleGridDataProviderFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="SaleGridDataProviderFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+    <arguments>
+        <argument name="appliers" xsi:type="array">
+            <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+            <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+        </argument>
+    </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+    <arguments>
+        <argument name="collections" xsi:type="array">
+            <item name="sale_listing_data_source" xsi:type="string">Tickles\Supersales\Model\ResourceModel\Grid\Sale\Collection</item>
+        </argument>
+    </arguments>
+    </type>
+
+    <virtualType name="Tickles\Supersales\Model\ResourceModel\Grid\Sale\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+    <arguments>
+        <argument name="mainTable" xsi:type="string">supersale</argument>
+        <argument name="resourceModel" xsi:type="string">Tickles\Supersales\Model\ResourceModel\Sale</argument>
+    </arguments>
+    </virtualType>
+
+
+</config>

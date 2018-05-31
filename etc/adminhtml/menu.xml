@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Tickles_Supersales::Index" title="Tickles SuperSales" module="Tickles_Supersales" resource="Magento_Backend::content" action="supersales/sale/index" sortOrder="10"/>
+    </menu>
+</config>
