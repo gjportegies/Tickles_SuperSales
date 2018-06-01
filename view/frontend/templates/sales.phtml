@@ -1,1 +1,45 @@
-<h3><?php Zend_Debug::dump($block->getActiveSales()); ?></h3>
+<?php
+    $_saleProducts = $block->getActiveSalesProducts();
+?>
+
+<div class="block widget grid">
+    <div class="block-title">
+        <h3><?= __('Supersales'); ?></h3>
+    </div>
+    <div class="block-content">
+        <div class="products-grid grid">
+            <ol class="product-items">
+                <?php foreach ($_saleProducts as $sale): ?>
+                <li class="product-item">
+                    <div class="product-item-info">
+                        <a href="<?php echo 'Product page link' ?>">
+                            <span class="product-image-container">
+                                <span class="product-image-wrapper">
+                                    <img src="" alt="" class="product-image-photo">
+                                </span>
+                            </span>
+                        </a>
+                        <div class="product-item-details">
+                            <strong class="product-item-name">
+                                <a href="<?php echo 'Product page link' ?>"><?= $sale->getName(); ?></a>
+                            </strong>
+                            <div class="price-box price-final_price">
+                              <span class="price-container price-final_price">
+                                  <span class="price-wrapper">
+                                      <span class="price">
+                                          <?= $sale->getFinalPrice(); ?>
+                                      </span>
+                                  </span>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <?php endforeach; ?>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+
