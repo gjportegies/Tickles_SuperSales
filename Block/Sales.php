@@ -4,6 +4,7 @@ namespace Tickles\Supersales\Block;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\ImageBuilder;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -55,15 +56,23 @@ class Sales extends Template
 
 
     public function getActiveSalesProducts() {
+        // TODO - CHECK CURRENT DATETIME AGAINST START/END DATES OF THE SALE IN ADDITION TO IS_ENABLED
+
         if (!$this->getData('supersales_id')) {
             $sales = $this->saleFactory->create()->getCollection()->setOrder('sort_order', 'asc');
-        }   else {
+        } else {
             $supersalesId = $this->getData('supersales_id');
-            $sales = $this->saleFactory->create()->getCollection()->getItemById($supersalesId);
+            $superSale = $this->saleFactory->create()->getCollection()->getItemById($supersalesId);
+
+            if(empty($superSale)) {
+                return [];
+            }
+
+            $sales = [$superSale];
         }
+
         $salesProductsArray = [];
         foreach ($sales as $sale) {
-            \Zend_Debug::dump($sale);
             $productId = $sale->getData('product_id');
             try {
                 if ($sale->getData('is_enabled')) {
@@ -72,9 +81,9 @@ class Sales extends Template
                 }
             } catch (NoSuchEntityException $e) {
                 $this->logger->critical($e);
-                die($e);
             }
         }
+
         return $salesProductsArray;
     }
 }
