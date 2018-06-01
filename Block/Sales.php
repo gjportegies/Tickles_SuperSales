@@ -3,6 +3,7 @@
 namespace Tickles\Supersales\Block;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Block\Product\ImageBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -21,6 +22,10 @@ class Sales extends Template
      * @var LoggerInterface
      */
     private $logger;
+    /**
+     * @var ImageBuilder
+     */
+    private $imageBuilder;
 
     /**
      * Sales constructor.
@@ -28,19 +33,37 @@ class Sales extends Template
      * @param Context                    $context
      * @param SaleFactory                $saleFactory
      * @param ProductRepositoryInterface $productRepository
+     * @param LoggerInterface            $logger
+     * @param ImageBuilder               $imageBuilder
+     * @param array                      $data
      */
-    public function __construct(Context $context, SaleFactory $saleFactory, ProductRepositoryInterface $productRepository, LoggerInterface $logger)
+    public function __construct(Context $context, SaleFactory $saleFactory, ProductRepositoryInterface $productRepository, LoggerInterface $logger, ImageBuilder $imageBuilder, array $data = [])
     {
-        parent::__construct($context);
+        parent::__construct($context, $data);
         $this->saleFactory = $saleFactory;
         $this->productRepository = $productRepository;
         $this->logger = $logger;
+        $this->imageBuilder = $imageBuilder;
     }
 
+    public function getImage($product, $imageId)
+    {
+        return $this->imageBuilder->setProduct($product)
+                                  ->setImageId($imageId)
+                                  ->create();
+    }
+
+
     public function getActiveSalesProducts() {
-        $sales = $this->saleFactory->create()->getCollection()->setOrder('sort_order', 'asc');
+        if (!$this->getData('supersales_id')) {
+            $sales = $this->saleFactory->create()->getCollection()->setOrder('sort_order', 'asc');
+        }   else {
+            $supersalesId = $this->getData('supersales_id');
+            $sales = $this->saleFactory->create()->getCollection()->getItemById($supersalesId);
+        }
         $salesProductsArray = [];
         foreach ($sales as $sale) {
+            \Zend_Debug::dump($sale);
             $productId = $sale->getData('product_id');
             try {
                 if ($sale->getData('is_enabled')) {
