@@ -58,11 +58,11 @@ class Sales extends Template
     public function getActiveSalesProducts() {
         // TODO - CHECK CURRENT DATETIME AGAINST START/END DATES OF THE SALE IN ADDITION TO IS_ENABLED
 
-        if (!$this->getData('supersales_id')) {
+        if (!$this->getData('sale_identifier')) {
             $sales = $this->saleFactory->create()->getCollection()->setOrder('sort_order', 'asc');
         } else {
-            $supersalesId = $this->getData('supersales_id');
-            $superSale = $this->saleFactory->create()->getCollection()->getItemById($supersalesId);
+            $supersalesId = $this->getData('sale_identifier');
+            $superSale = $this->saleFactory->create()->getCollection()->getItemByColumnValue('sale_identifier', $supersalesId);
 
             if(empty($superSale)) {
                 return [];

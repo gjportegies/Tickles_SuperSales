@@ -87,7 +87,26 @@ class Form extends Generic
                 'name' => 'sort_order',
                 'label' => __('Sort order'),
                 'title' => __('Sort order'),
-                'required' => true
+            ]
+        );
+
+        $fieldset->addField(
+            'sale_identifier',
+            'text',
+            [
+                'name' => 'sale_identifier',
+                'label' => __('Identifier'),
+                'title' => __('Identifier'),
+            ]
+        );
+
+        $fieldset->addField(
+            'label_text',
+            'text',
+            [
+                'name' => 'label_text',
+                'label' => __('Label text'),
+                'title' => __('Label text'),
             ]
         );
 

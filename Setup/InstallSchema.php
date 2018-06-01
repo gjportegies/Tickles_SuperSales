@@ -62,6 +62,20 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 'Sale sort order'
             )
             ->addColumn(
+                'sale_identifier',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                255,
+                [ 'nullable => false' ],
+                'Sale sort order'
+            )
+            ->addColumn(
+                'label_text',
+                \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                255,
+                [ 'nullable => false' ],
+                'Sale sort order'
+            )
+            ->addColumn(
                 'start_date',
                 \Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
                 null,
