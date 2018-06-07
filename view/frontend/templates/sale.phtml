@@ -1,66 +1,69 @@
 <?php
 /** @var $block Tickles\Supersales\Block\Sales */
 /** @var Magento\Catalog\Model\Product $_saleProduct */
-$_saleProduct = $block->getActiveSalesProducts()[0];
-$_salePrice = $_saleProduct->getFinalPrice();
-$_originalPrice = $_saleProduct->getPrice();
-$_expirationDate = $_saleProduct->getData('end_date');
-$_saleLabel = $_saleProduct->getData('label_text')
+$_saleProductItem = $block->getActiveSalesProducts();
+if(!empty($_saleProductItem)):
+    $_saleProduct = reset($_saleProductItem);
+    $_salePrice = $_saleProduct->getFinalPrice();
+    $_originalPrice = $_saleProduct->getPrice();
+    $_expirationDate = $_saleProduct->getData('end_date');
+    $_saleLabel = $_saleProduct->getData('label_text')
 ?>
 
-<div class="supersale">
-    <?php if ($_saleLabel): ?>
-        <div class="supersale_label">
-            <?= $_saleLabel ?>
-        </div>
-    <?php endif; ?>
-    <div class="supersale__image">
-        <a href="<?= $_saleProduct->getProductUrl(); ?>">
-            <img src="<?php echo $block->getImage($_saleProduct, 'category_page_grid')->getImageUrl(); ?>" alt="<?= $_saleProduct->getName(); ?>">
-        </a>
-    </div>
-    <div class="supersale__details">
-        <div class="supersale__title">
-            <?= $_saleProduct->getName(); ?>
-        </div>
-        <div class="countdown">
-                <div id="counter-seconds"></div>
-                <div id="counter-minutes"></div>
-                <div id="counter-hours"></div>
-        </div>
-        <div class="supersale__details--bottom">
-            <div class="supersale__price">
-                <div class="supersale__price--final"><?= $block->getFormattedPrice($_salePrice); ?></div>
-                <div class="supersale__price--regular"><?= $block->getFormattedPrice($_originalPrice); ?></div>
+    <div class="supersale">
+        <?php if ($_saleLabel): ?>
+            <div class="supersale_label">
+                <?= $_saleLabel ?>
             </div>
-            <a href="#" class="btn btn-primary"></a>
+        <?php endif; ?>
+        <div class="supersale__image">
+            <a href="<?= $_saleProduct->getProductUrl(); ?>">
+                <img src="<?php echo $block->getImage($_saleProduct, 'category_page_grid')->getImageUrl(); ?>" alt="<?= $_saleProduct->getName(); ?>">
+            </a>
+        </div>
+        <div class="supersale__details">
+            <div class="supersale__title">
+                <?= $_saleProduct->getName(); ?>
+            </div>
+            <div class="countdown">
+                    <div id="counter-seconds"></div>
+                    <div id="counter-minutes"></div>
+                    <div id="counter-hours"></div>
+            </div>
+            <div class="supersale__details--bottom">
+                <div class="supersale__price">
+                    <div class="supersale__price--final"><?= $block->getFormattedPrice($_salePrice); ?></div>
+                    <div class="supersale__price--regular"><?= $block->getFormattedPrice($_originalPrice); ?></div>
+                </div>
+                <a href="#" class="btn btn-primary"></a>
+            </div>
         </div>
     </div>
-</div>
 
-<script type="text/javascript">
-    require([
-        'jquery',
-        'jquery_countdown'
-    ], function($){
-        $("#counter-seconds")
-            .countdown('<?= $_expirationDate ?>', function (event) {
-                $(this).text(
-                    event.strftime('%S second%!S')
-                );
-            });
-        $("#counter-minutes")
-            .countdown('<?= $_expirationDate ?>', function (event) {
-                $(this).text(
-                    event.strftime('%M minute%!M')
-                );
-            });
-        $("#counter-hours")
-            .countdown('<?= $_expirationDate ?>', function (event) {
-                $(this).text(
-                    event.strftime('%H hour%!H')
-                );
-            });
-    });
+    <script type="text/javascript">
+        require([
+            'jquery',
+            'jquery_countdown'
+        ], function($){
+            $("#counter-seconds")
+                .countdown('<?= $_expirationDate ?>', function (event) {
+                    $(this).text(
+                        event.strftime('%S second%!S')
+                    );
+                });
+            $("#counter-minutes")
+                .countdown('<?= $_expirationDate ?>', function (event) {
+                    $(this).text(
+                        event.strftime('%M minute%!M')
+                    );
+                });
+            $("#counter-hours")
+                .countdown('<?= $_expirationDate ?>', function (event) {
+                    $(this).text(
+                        event.strftime('%H hour%!H')
+                    );
+                });
+        });
 
-</script>
+    </script>
+<?php endif; ?>

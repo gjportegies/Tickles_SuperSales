@@ -76,23 +76,12 @@ class Sales extends Template
      * @return array
      */
     public function getActiveSalesProducts() {
-        // TODO - CHECK CURRENT DATETIME AGAINST START/END DATES OF THE SALE IN ADDITION TO IS_ENABLED
 
-        if (!$this->getData('sale_identifier')) {
-            $sales = $this->saleFactory->create()->getCollection()->setOrder('sort_order', 'asc');
-        } else {
-            $supersalesId = $this->getData('sale_identifier');
-            $superSale = $this->saleFactory->create()->getCollection()->getItemByColumnValue('sale_identifier', $supersalesId);
-
-            if(empty($superSale)) {
-                return [];
-            }
-
-            $sales = [$superSale];
-        }
+        $saleIdentifier = $this->getData('sale_identifier') ?? null;
+        $sales = $this->getSuperSalesCollection($saleIdentifier);
 
         $salesProductsArray = [];
-        foreach ($sales as $sale) {
+        foreach ($sales->getItems() as $sale) {
             $productId = $sale->getData('product_id');
             try {
                 if ($sale->getData('is_enabled')) {
@@ -108,6 +97,30 @@ class Sales extends Template
         }
 
         return $salesProductsArray;
+    }
+
+    /**
+     * Get super sales collection
+     * @param $saleIdentifier optional parameter to get specific supersale
+     *
+     * @return array [\Tickles\Supersales\Model\ResourceModel\Sale\Collection]
+     */
+    public function getSuperSalesCollection($saleIdentifier = null)
+    {
+        $now = (new \DateTime())->format('Y-m-d H:i:s');
+
+        $sales = $this->saleFactory
+            ->create()
+            ->getCollection()
+            ->addFieldToFilter('start_date', ['lteq' => $now])
+            ->addFieldToFilter('end_date', ['gt' => $now])
+            ->addFieldToFilter('is_enabled', true);
+        if($saleIdentifier !== null) {
+            $sales->addFieldToFilter('sale_identifier', $saleIdentifier);
+            $sales->setPageSize(1);
+        }
+
+        return $sales;
     }
 
 }
