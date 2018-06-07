@@ -23,7 +23,9 @@ if(!empty($_saleProductItem)):
         </div>
         <div class="supersale__details">
             <div class="supersale__title">
-                <?= $_saleProduct->getName(); ?>
+                <a href="<?= $_saleProduct->getProductUrl(); ?>">
+                    <?= $_saleProduct->getName(); ?>
+                </a>
             </div>
             <div class="countdown">
                     <div id="counter-seconds"></div>
@@ -35,7 +37,7 @@ if(!empty($_saleProductItem)):
                     <div class="supersale__price--final"><?= $block->getFormattedPrice($_salePrice); ?></div>
                     <div class="supersale__price--regular"><?= __('normaal ') .  $block->getFormattedPrice($_originalPrice); ?></div>
                 </div>
-                <a href="#" class="btn btn-primary"></a>
+                <a href="<?= $_saleProduct->getProductUrl(); ?>" class="btn btn-primary"><?= __('Bekijk'); ?></a>
             </div>
         </div>
     </div>
