@@ -4,18 +4,29 @@
 $_saleProduct = $block->getActiveSalesProducts()[0];
 $_salePrice = $_saleProduct->getFinalPrice();
 $_originalPrice = $_saleProduct->getPrice();
+$_expirationDate = $_saleProduct->getData('end_date');
+$_saleLabel = $_saleProduct->getData('label_text')
 ?>
 
 <div class="supersale">
+    <?php if ($_saleLabel): ?>
+        <div class="supersale_label">
+            <?= $_saleLabel ?>
+        </div>
+    <?php endif; ?>
     <div class="supersale__image">
-
+        <a href="<?= $_saleProduct->getProductUrl(); ?>">
+            <img src="<?php echo $block->getImage($_saleProduct, 'category_page_grid')->getImageUrl(); ?>" alt="<?= $_saleProduct->getName(); ?>">
+        </a>
     </div>
     <div class="supersale__details">
         <div class="supersale__title">
             <?= $_saleProduct->getName(); ?>
         </div>
         <div class="countdown">
-                <div id="counter"></div>
+                <div id="counter-seconds"></div>
+                <div id="counter-minutes"></div>
+                <div id="counter-hours"></div>
         </div>
         <div class="supersale__details--bottom">
             <div class="supersale__price">
@@ -27,20 +38,29 @@ $_originalPrice = $_saleProduct->getPrice();
     </div>
 </div>
 
-<?php
-$expirationDate = '2018/07/01';
-?>
-
 <script type="text/javascript">
     require([
         'jquery',
         'jquery_countdown'
     ], function($){
-        $("#counter")
-            .countdown('<?= $expirationDate ?>', function (event) {
+        $("#counter-seconds")
+            .countdown('<?= $_expirationDate ?>', function (event) {
                 $(this).text(
-                    event.strftime('%D days %H:%M:%S')
+                    event.strftime('%S second%!S')
+                );
+            });
+        $("#counter-minutes")
+            .countdown('<?= $_expirationDate ?>', function (event) {
+                $(this).text(
+                    event.strftime('%M minute%!M')
+                );
+            });
+        $("#counter-hours")
+            .countdown('<?= $_expirationDate ?>', function (event) {
+                $(this).text(
+                    event.strftime('%H hour%!H')
                 );
             });
     });
+
 </script>

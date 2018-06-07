@@ -97,6 +97,9 @@ class Sales extends Template
             try {
                 if ($sale->getData('is_enabled')) {
                     $product = $this->productRepository->getById($productId);
+                    $product->setData('end_date', $sale->getData('end_date'));
+                    $product->setData('start_date', $sale->getData('start_date'));
+                    $product->setData('label_text', $sale->getData('label_text'));
                     $salesProductsArray[] = $product;
                 }
             } catch (NoSuchEntityException $e) {
@@ -106,4 +109,5 @@ class Sales extends Template
 
         return $salesProductsArray;
     }
+
 }
