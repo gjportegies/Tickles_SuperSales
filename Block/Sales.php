@@ -73,12 +73,14 @@ class Sales extends Template
     }
 
     /**
+     * @param null $pageSize
+     *
      * @return array
      */
-    public function getActiveSalesProducts() {
+    public function getActiveSalesProducts($pageSize = null) {
 
         $saleIdentifier = $this->getData('sale_identifier') ?? null;
-        $sales = $this->getSuperSalesCollection($saleIdentifier);
+        $sales = $this->getSuperSalesCollection($saleIdentifier, $pageSize);
 
         $salesProductsArray = [];
         foreach ($sales->getItems() as $sale) {
@@ -101,11 +103,14 @@ class Sales extends Template
 
     /**
      * Get super sales collection
-     * @param $saleIdentifier optional parameter to get specific supersale
+     *
+     * @param      $saleIdentifier optional parameter to get specific supersale
+     *
+     * @param null $pageSize optional parameter to set amount of results in the collection
      *
      * @return array [\Tickles\Supersales\Model\ResourceModel\Sale\Collection]
      */
-    public function getSuperSalesCollection($saleIdentifier = null)
+    public function getSuperSalesCollection($saleIdentifier = null, $pageSize = null)
     {
         $now = (new \DateTime())->format('Y-m-d H:i:s');
 
@@ -117,7 +122,9 @@ class Sales extends Template
             ->addFieldToFilter('is_enabled', true);
         if($saleIdentifier !== null) {
             $sales->addFieldToFilter('sale_identifier', $saleIdentifier);
-            $sales->setPageSize(1);
+            if ($pageSize !== null){
+                $sales->setPageSize($pageSize);
+            }
         }
 
         return $sales;
