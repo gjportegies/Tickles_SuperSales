@@ -33,7 +33,7 @@ if(!empty($_saleProductItem)):
             <div class="supersale__details--bottom">
                 <div class="supersale__price">
                     <div class="supersale__price--final"><?= $block->getFormattedPrice($_salePrice); ?></div>
-                    <div class="supersale__price--regular"><?= $block->getFormattedPrice($_originalPrice); ?></div>
+                    <div class="supersale__price--regular"><?= __('normaal ') .  $block->getFormattedPrice($_originalPrice); ?></div>
                 </div>
                 <a href="#" class="btn btn-primary"></a>
             </div>
@@ -47,20 +47,20 @@ if(!empty($_saleProductItem)):
         ], function($){
             $("#counter-seconds")
                 .countdown('<?= $_expirationDate ?>', function (event) {
-                    $(this).text(
-                        event.strftime('%S second%!S')
+                    $(this).html(
+                        event.strftime('<span>%S</span> second%!S')
                     );
                 });
             $("#counter-minutes")
                 .countdown('<?= $_expirationDate ?>', function (event) {
-                    $(this).text(
-                        event.strftime('%M minute%!M')
+                    $(this).html(
+                        event.strftime('<span>%M</span> minute%!M')
                     );
                 });
             $("#counter-hours")
                 .countdown('<?= $_expirationDate ?>', function (event) {
-                    $(this).text(
-                        event.strftime('%H hour%!H')
+                    $(this).html(
+                        event.strftime('<span>%H</span> hour%!H')
                     );
                 });
         });
