@@ -19,7 +19,7 @@ Supersales is a open source Magento 2 module to manage and display Flash sales.
 Install module trough composer:
 
 ```sh
-$ composer require tickles/magento2-supersales
+$ composer require tickles/supersales
 $ bin/magento setup:upgrade
 ```
 
