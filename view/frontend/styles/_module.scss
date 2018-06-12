@@ -1,0 +1,25 @@
+.supersale {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid $border-color__base;
+
+    &__label {
+        position: absolute;
+    }
+
+    &__image {}
+
+    &__details {
+        flex: 1 0 auto;
+    }
+}
+
+.countdown {
+    display: flex;
+
+    .counter {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+}

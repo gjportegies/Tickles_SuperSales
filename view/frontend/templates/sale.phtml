@@ -9,10 +9,12 @@ if(!empty($_saleProductItem)):
     $_expirationDate = $_saleProduct->getData('end_date');
     $_saleLabel = $_saleProduct->getData('label_text')
 ?>
-
+    <div class="block-title">
+        <strong><?= __('Daily deal'); ?></strong>
+    </div>
     <div class="supersale">
         <?php if ($_saleLabel): ?>
-            <div class="supersale_label">
+            <div class="supersale__label">
                 <?= $_saleLabel ?>
             </div>
         <?php endif; ?>
@@ -28,9 +30,9 @@ if(!empty($_saleProductItem)):
                 </a>
             </div>
             <div class="countdown">
-                    <div id="counter-seconds"></div>
-                    <div id="counter-minutes"></div>
-                    <div id="counter-hours"></div>
+                    <div id="counter-seconds" class="counter"></div>
+                    <div id="counter-minutes" class="counter"></div>
+                    <div id="counter-hours" class="counter"></div>
             </div>
             <div class="supersale__details--bottom">
                 <div class="supersale__price">
@@ -45,24 +47,27 @@ if(!empty($_saleProductItem)):
     <script type="text/javascript">
         require([
             'jquery',
-            'jquery_countdown'
+            'jquery_countdown',
         ], function($){
+            var seconds = $.mage.__('sec');
+            var minutes = $.mage.__('min');
+            var hours = $.mage.__('hour');
             $("#counter-seconds")
                 .countdown('<?= $_expirationDate ?>', function (event) {
                     $(this).html(
-                        event.strftime('<span>%S</span> second%!S')
+                        event.strftime('<span>%S</span> ' + seconds)
                     );
                 });
             $("#counter-minutes")
                 .countdown('<?= $_expirationDate ?>', function (event) {
                     $(this).html(
-                        event.strftime('<span>%M</span> minute%!M')
+                        event.strftime('<span>%M</span> ' + minutes)
                     );
                 });
             $("#counter-hours")
                 .countdown('<?= $_expirationDate ?>', function (event) {
                     $(this).html(
-                        event.strftime('<span>%H</span> hour%!H')
+                        event.strftime('<span>%H</span> ' + hours)
                     );
                 });
         });
