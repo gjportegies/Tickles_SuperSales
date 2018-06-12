@@ -4,10 +4,11 @@
 $_saleProductItem = $block->getActiveSalesProducts();
 if(!empty($_saleProductItem)):
     $_saleProduct = reset($_saleProductItem);
-    $_salePrice = $_saleProduct->getFinalPrice();
+    $_salePrice = $_saleProduct->getPriceInfo()->getPrice('final_price')->getValue();
     $_originalPrice = $_saleProduct->getPrice();
     $_expirationDate = $_saleProduct->getData('end_date');
-    $_saleLabel = $_saleProduct->getData('label_text')
+    $_saleLabel = $_saleProduct->getData('label_text');
+    $_isSimpleProduct = $_saleProduct->getTypeId() == 'simple';
 ?>
 
     <div class="supersale">
@@ -35,7 +36,9 @@ if(!empty($_saleProductItem)):
             <div class="supersale__details--bottom">
                 <div class="supersale__price">
                     <div class="supersale__price--final"><?= $block->getFormattedPrice($_salePrice); ?></div>
+                    <?php if ($_isSimpleProduct): ?>
                     <div class="supersale__price--regular"><?= __('normaal ') .  $block->getFormattedPrice($_originalPrice); ?></div>
+                    <?php endif; ?>
                 </div>
                 <a href="<?= $_saleProduct->getProductUrl(); ?>" class="btn btn-primary"><?= __('Bekijk'); ?></a>
             </div>
