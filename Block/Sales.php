@@ -6,6 +6,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\ImageBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Psr\Log\LoggerInterface;
@@ -31,6 +32,10 @@ class Sales extends Template
      * @var array
      */
     private $priceHelper;
+    /**
+     * @var TimezoneInterface
+     */
+    private $timezone;
 
     /**
      * Sales constructor.
@@ -50,6 +55,7 @@ class Sales extends Template
         LoggerInterface $logger,
         ImageBuilder $imageBuilder,
         Data $priceHelper,
+        TimezoneInterface $timezone,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -58,6 +64,7 @@ class Sales extends Template
         $this->logger = $logger;
         $this->imageBuilder = $imageBuilder;
         $this->priceHelper = $priceHelper;
+        $this->timezone = $timezone;
     }
 
     public function getImage($product, $imageId)
@@ -112,7 +119,7 @@ class Sales extends Template
      */
     public function getSuperSalesCollection($saleIdentifier = null, $pageSize = null)
     {
-        $now = (new \DateTime())->format('Y-m-d H:i:s');
+        $now = $this->timezone->date()->format('Y-m-d H:i:s');
 
         $sales = $this->saleFactory
             ->create()
